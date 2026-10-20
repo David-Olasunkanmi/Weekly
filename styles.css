@@ -187,16 +187,28 @@ input {
   }
   .row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 10px;
   }
   .day {
     grid-column: 1 / -1;
     width: auto;
   }
+  .row label {
+    min-width: 0;
+  }
   input[type="time"],
   input[type="number"] {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input[type="time"]::-webkit-date-and-time-value {
+    text-align: left;
   }
   .hrs {
     margin-left: 0;
