@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+    <title>Weekly</title>
+  </head>
+  <body>
+    <main>
+      <h1>Weekly Work Hours Tracker</h1>
+      <p class="sub">
+        Enter your start time, end time and unpaid break for each day.
+      </p>
+
+      <div class="card">
+        <div class="limit">
+          <label
+            >Weekly limit (hours)
+            <input
+              id="limit"
+              type="number"
+              min="1"
+              max="168"
+              step="0.5"
+              value="24"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="card" id="days"></div>
+
+      <div class="card" aria-live="polite">
+        <p class="total" id="total">0.00 hours</p>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <p class="status" id="status"></p>
+      </div>
+
+      <button class="ghost" id="reset" type="button">Clear week</button>
+      <p class="note">
+        Your entries are saved in this browser only. Nobody else can see them.
+        The 24 hour cap applies during regular academic sessions and rules can
+        change, so confirm the current rules on the
+        <a
+          href="https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/work-off-campus.html" target="_blank" rel="noopener">IRCC off-campus work page</a>.
+      </p>
+    </main>
+    <footer class="note">&copy; 2026 David Olasunkanmi. All rights reserved.</footer>
+  </body>
+</html>
