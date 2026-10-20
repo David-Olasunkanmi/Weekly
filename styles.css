@@ -177,3 +177,33 @@ footer {
   margin-top: 24px;
   text-align: center;
 }
+input {
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 14px 10px 32px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .day {
+    grid-column: 1 / -1;
+    width: auto;
+  }
+  input[type="time"],
+  input[type="number"] {
+    width: 100%;
+  }
+  .hrs {
+    margin-left: 0;
+    text-align: right;
+    align-self: end;
+  }
+  .total {
+    font-size: 1.6rem;
+  }
+}
