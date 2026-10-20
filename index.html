@@ -1,54 +1,78 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="theme-color" content="#2457d6" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="script.js" defer></script>
-  <title>Weekly</title>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#2457d6" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+    <title>Weekly: Hours and Pay Tracker</title>
+  </head>
   <body>
     <main>
-      <h1>Weekly Work Hours Tracker</h1>
+      <h1>Weekly</h1>
       <p class="sub">
-        Enter your start time, end time and unpaid break for each day.
+        Enter your start time, end time and unpaid break for each day, plus your
+        hourly pay, to see your hours and expected pay.
       </p>
 
       <div class="card">
         <div class="limit">
-          <label
-            >Weekly limit (hours)
+          <label>
+            Hourly pay ($)
+            <input
+              id="rate"
+              type="number"
+              min="0"
+              step="0.01"
+              inputmode="decimal"
+              placeholder="e.g. 17.50"
+            />
+          </label>
+          <label>
+            Weekly hour limit (optional)
             <input
               id="limit"
               type="number"
               min="1"
               max="168"
               step="0.5"
-              value="24"
+              inputmode="decimal"
+              placeholder="e.g. 40"
             />
           </label>
         </div>
       </div>
-
       <div class="card" id="days"></div>
-
       <div class="card" aria-live="polite">
         <p class="total" id="total">0.00 hours</p>
         <div class="bar"><div class="fill" id="fill"></div></div>
         <p class="status" id="status"></p>
       </div>
+      <div class="card" aria-live="polite">
+        <h2>Expected pay</h2>
+        <div class="pay-grid">
+          <div><span>This week</span><strong id="payWeek">$0.00</strong></div>
+          <div><span>Biweekly</span><strong id="payBi">$0.00</strong></div>
+          <div><span>Monthly</span><strong id="payMonth">$0.00</strong></div>
+        </div>
+        <p class="note">
+          Before tax and deductions. Biweekly and monthly assume you work the
+          same hours every week.
+        </p>
+      </div>
 
       <button class="ghost" id="reset" type="button">Clear week</button>
       <p class="note">
         Your entries are saved in this browser only. Nobody else can see them.
-        The 24 hour cap applies during regular academic sessions and rules can
-        change, so confirm the current rules on the
+        Pay figures are estimates before tax and deductions. If your work hours
+        are capped, for example by a student permit, confirm the current rules
+        on the
         <a
           href="https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/work-off-campus.html"
           target="_blank"

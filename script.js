@@ -1,8 +1,8 @@
-
 (function () {
     var NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     var KEY = "work-hours-week";
-    var state = { limit: 24, days: NAMES.map(function () { return { start: "", end: "", brk: 0 }; }) };
+    //  limit is blank by default, and there is a rate
+    var state = { limit: "", rate: "", days: NAMES.map(function () { return { start: "", end: "", brk: 0 }; }) };
 
     try {
         var saved = localStorage.getItem(KEY);
@@ -11,6 +11,8 @@
             if (parsed && Array.isArray(parsed.days) && parsed.days.length === 7) state = parsed;
         }
     } catch (e) { }
+    // older saved data has no rate
+    if (state.rate === undefined) state.rate = "";
 
     function save() {
         try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { }
@@ -29,6 +31,11 @@
         if (diff < 0) diff += 1440; // shift went past midnight
         var mins = diff - (Number(d.brk) || 0);
         return Math.max(0, mins) / 60;
+    }
+
+    // formats a number as money
+    function money(n) {
+        return "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     var daysEl = document.getElementById("days");
@@ -54,7 +61,8 @@
             var v = state.days[el.dataset.i][el.dataset.f];
             el.value = (el.dataset.f === "brk" && !v) ? "" : v;
         }
-        document.getElementById("limit").value = state.limit;
+        document.getElementById("limit").value = state.limit || "";
+        document.getElementById("rate").value = state.rate; 
     }
 
     function update() {
@@ -64,21 +72,38 @@
             total += h;
             hrsEls[i].textContent = h.toFixed(2) + " h";
         });
-        var limit = Number(state.limit) || 24;
-        var pct = Math.min(100, (total / limit) * 100);
+
+        var limit = Number(state.limit) || 0;   // 0 means no limit
+        var rate = parseFloat(state.rate) || 0; 
         var fill = document.getElementById("fill");
+        var bar = fill.parentElement;
         var status = document.getElementById("status");
         document.getElementById("total").textContent = total.toFixed(2) + " hours";
-        fill.style.width = pct + "%";
-        if (total <= limit) {
-            fill.style.background = "var(--ok)";
-            status.className = "status ok";
-            status.textContent = "Within the " + limit + " hour limit. " + (limit - total).toFixed(2) + " hours left.";
+
+        // Only show the bar and status when a limit is set
+        if (limit > 0) {
+            bar.style.display = "";
+            fill.style.width = Math.min(100, (total / limit) * 100) + "%";
+            if (total <= limit) {
+                fill.style.background = "var(--ok)";
+                status.className = "status ok";
+                status.textContent = "Within the " + limit + " hour limit. " + (limit - total).toFixed(2) + " hours left.";
+            } else {
+                fill.style.background = "var(--bad)";
+                status.className = "status bad";
+                status.textContent = "Over the " + limit + " hour limit by " + (total - limit).toFixed(2) + " hours.";
+            }
         } else {
-            fill.style.background = "var(--bad)";
-            status.className = "status bad";
-            status.textContent = "Over the " + limit + " hour limit by " + (total - limit).toFixed(2) + " hours.";
+            bar.style.display = "none";
+            status.className = "status";
+            status.textContent = "";
         }
+
+        // pay math
+        var weekPay = total * rate;
+        document.getElementById("payWeek").textContent = money(weekPay);
+        document.getElementById("payBi").textContent = money(weekPay * 2);
+        document.getElementById("payMonth").textContent = money(weekPay * 52 / 12);
     }
 
     daysEl.addEventListener("input", function (e) {
@@ -89,7 +114,13 @@
     });
 
     document.getElementById("limit").addEventListener("input", function (e) {
-        state.limit = Number(e.target.value) || 24;
+        state.limit = Number(e.target.value) || "";
+        save(); update();
+    });
+
+    // NEW
+    document.getElementById("rate").addEventListener("input", function (e) {
+        state.rate = e.target.value;
         save(); update();
     });
 
@@ -102,5 +133,5 @@
     update();
 })();
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+    navigator.serviceWorker.register("sw.js");
 }

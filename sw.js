@@ -1,4 +1,4 @@
-const CACHE = "weekly-v3";
+const CACHE = "weekly-v4";
 const FILES = ["./", "index.html", "styles.css", "script.js", "manifest.json", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", (e) => {

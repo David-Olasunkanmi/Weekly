@@ -177,6 +177,32 @@ footer {
   margin-top: 24px;
   text-align: center;
 }
+
+h2 {
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+}
+.limit input[type="number"] {
+  width: 130px;
+}
+.pay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.pay-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pay-grid span {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.pay-grid strong {
+  font-size: 1.25rem;
+}
 input {
   font-size: 16px;
 }
@@ -217,5 +243,19 @@ input {
   }
   .total {
     font-size: 1.6rem;
+  }
+    .limit label {
+    flex: 1 1 140px;
+  }
+  .limit input[type="number"] {
+    width: 100%;
+  }
+  .pay-grid {
+    grid-template-columns: 1fr;
+  }
+  .pay-grid div {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
   }
 }
